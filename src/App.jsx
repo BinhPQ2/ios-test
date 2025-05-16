@@ -1,9 +1,19 @@
+import { useEffect } from "react";
 import { copyTextToClipboard } from "./utils/copyClipboard";
 import { showToast } from "./utils/toast";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function App() {
+  // Auto-copy "auto-copy!" when the component mounts
+  useEffect(() => {
+    copyTextToClipboard(
+      "auto-copy!",
+      () => showToast({ level: "success", title: "Auto-copied!" }),
+      console.error
+    );
+  }, []);
+
   const handleCopy123 = () => {
     copyTextToClipboard(
       "123",

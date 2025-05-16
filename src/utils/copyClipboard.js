@@ -1,59 +1,48 @@
-function execCopyTextCommand(text, onResolve, onReject) {
-  const textarea = document.createElement("textarea");
-  textarea.value = text;
-  textarea.style.position = "fixed"; // avoid scrolling
-  textarea.style.top = "0";
-  textarea.style.left = "0";
-  document.body.appendChild(textarea);
-  textarea.focus();
-  textarea.select();
+function fallbackCopy(text) {
+  return new Promise((resolve, reject) => {
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    textarea.style.position = "fixed";
+    textarea.style.top = "0";
+    textarea.style.left = "0";
+    document.body.appendChild(textarea);
 
-  let didCopy = false;
-  try {
-    // only pass the command name to match current TS defs
-    didCopy = document.execCommand("copy");
-    if (didCopy) {
-      onResolve();
-    } else {
-      throw new Error("execCommand returned false");
-    }
-  } catch (err) {
-    console.warn("execCommand failed:", err);
-    onReject(err);
-  } finally {
-    document.body.removeChild(textarea);
-  }
+    textarea.focus();
+    textarea.select();
 
-  return didCopy;
-}
-
-function writeTextToNavigatorClipboard(text, onResolve, onReject) {
-  if (!navigator.clipboard || !navigator.clipboard.writeText) {
-    return false;
-  }
-
-  navigator.clipboard
-    .writeText(text)
-    .then(onResolve)
-    .catch((err) => {
-      console.warn("navigator.clipboard.writeText failed, falling back:", err);
-      // fallback to execCommand if async API rejects
-      if (!execCopyTextCommand(text, onResolve, onReject)) {
-        onReject(err);
+    try {
+      const successful = document.execCommand("copy");
+      if (successful) {
+        resolve();
+      } else {
+        reject(new Error("execCommand returned false"));
       }
-    });
-
-  return true;
+    } catch (err) {
+      reject(err);
+    } finally {
+      document.body.removeChild(textarea);
+    }
+  });
 }
 
-export async function copyTextToClipboard(text, onResolve, onReject) {
-  const isClipboardSuccess = writeTextToNavigatorClipboard(
-    text,
-    onResolve,
-    onReject
-  );
-  if (!isClipboardSuccess) {
-    // fallback to execCommand if async API is not available
-    return execCopyTextCommand(text, onResolve, onReject);
+// Unified copyTextToClipboard that always returns a Promise and supports callbacks
+export function copyTextToClipboard(text, onResolve, onReject) {
+  let promise;
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    promise = navigator.clipboard
+      .writeText(text)
+      .catch(() => fallbackCopy(text));
+  } else {
+    promise = fallbackCopy(text);
   }
+
+  // Attach callbacks if provided
+  if (typeof onResolve === "function" || typeof onReject === "function") {
+    promise.then(
+      () => onResolve && onResolve(),
+      (err) => onReject && onReject(err)
+    );
+  }
+
+  return promise;
 }
