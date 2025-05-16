@@ -1,0 +1,174 @@
+@import "tailwindcss";
+
+@theme {
+  --color-white_background: #ffffff;
+  --color-locked_state_background: #f9fafb;
+  --color-main_dklab_theme: #f89090;
+  --color-main_dklab_theme_light: #f8a3a3;
+  --color-input_background: #ffffff;
+  --color-text_color: #637381;
+  --color-text_color_info: #111928;
+  --color-text_color_light: #1f2a37;
+  --color-text_color_preview_message: #2c2c2c;
+  --color-text_color_locked_state: #6a7282;
+  --color-text_green_success: #009951;
+  --color-text_red_fail: #c00f0c;
+  --color-text_limit_color: #e6e6e6;
+  --color-border_color: #dfe4ea;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  overflow-wrap: anywhere;
+}
+
+/* Page Header Font */
+h4 {
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 38px;
+}
+
+/* Message Limit Font */
+.body-mini-regular {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 140%;
+}
+
+/* Webshare Title Font in Preview */
+.body-small-regular {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 140%;
+}
+
+/* File List Header Font */
+.body-small-bold {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 140%;
+}
+
+/* Normal Text Font */
+.body-medium-regular {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 140%;
+}
+
+/* Preview Message Font */
+.body-medium-bold {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 140%;
+}
+
+/* Notification Font */
+.body-large-semibold {
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 140%;
+}
+
+/* Section Header Font */
+.body-large-bold {
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 140%;
+}
+
+/* Sub Header Font */
+.sub-heading {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 120%;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  display: none;
+  -webkit-appearance: none;
+}
+
+.custom-btn-copy-white-text {
+  @apply inline-flex items-center justify-center gap-x-1.5 rounded-lg bg-main_dklab_theme px-2.5 py-1.5 font-semibold text-white shadow-xs hover:bg-main_dklab_theme_light focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-main_dklab_theme;
+}
+
+.custom-btn-copy-theme-text {
+  @apply inline-flex items-center justify-center gap-x-1.5 rounded-lg bg-white_background border border-main_dklab_theme px-2.5 py-1.5 font-semibold text-main_dklab_theme shadow-xs hover:bg-main_dklab_theme_light focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-main_dklab_theme;
+}
+
+.custom-btn-link-alike {
+  @apply inline-flex items-center justify-center text-main_dklab_theme hover:text-main_dklab_theme_light bg-transparent border-none cursor-pointer;
+}
+
+.custom-radio-button {
+  @apply relative size-4 appearance-none rounded-full border border-gray-300 bg-white before:absolute before:inset-1 before:rounded-full before:bg-white not-checked:before:hidden checked:border-main_dklab_theme checked:bg-main_dklab_theme focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-main_dklab_theme;
+}
+
+.file-list-header {
+  @apply sticky top-0 z-10 border-b border-gray-300 bg-white/75 backdrop-blur-sm backdrop-filter text-left;
+}
+
+.file-list-item-border {
+  @apply border-b border-gray-200;
+}
+
+.datetime-input-box {
+  @apply w-full border border-border_color rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring focus:ring-main_dklab_theme_light;
+}
+
+.locked-state-appearance {
+  color: var(--color-gray-500) /* #6a7282 */;
+  background-color: var(--color-gray-50) /* #f9fafb */;
+  cursor: not-allowed;
+}
+
+.slide-up-text-box {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  line-height: 117%;
+}
+
+@keyframes slide-up {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  10% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.slide-up {
+  animation: slide-up 15s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+:root {
+  font-family: "Inter", sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  /* color-scheme: light dark; */
+  color: var(--color-text_color);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button {
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
